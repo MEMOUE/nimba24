@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ categorie.get_nom_display }} - Nimba24{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-br from-forest-50 to-gray-50 py-12">
+    <div class="container mx-auto px-4">
+        <!-- Header catégorie -->
+        <div class="mb-12 text-center">
+            <h1 class="text-5xl font-bold text-forest-800 mb-4">
+                {{ categorie.get_nom_display }}
+            </h1>
+            {% if categorie.description %}
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">{{ categorie.description }}</p>
+            {% endif %}
+        </div>
+        
+        <!-- Articles -->
+        {% if articles %}
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                {% for article in articles %}
+                    <article class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition group">
+                        <a href="{% url 'nimbaApp:article_detail' article.id %}">
+                            <div class="relative aspect-video overflow-hidden">
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                                {% else %}
+                                    <div class="w-full h-full gradient-forest flex items-center justify-center">
+                                        <span class="text-white text-5xl">📰</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="p-6">
+                                <span class="text-xs text-gray-500">{{ article.date_publication|date:"d M Y" }}</span>
+                                <h3 class="text-xl font-bold text-gray-900 mt-2 mb-2 group-hover:text-forest-600 transition line-clamp-2">
+                                    {{ article.titre }}
+                                </h3>
+                                {% if article.sous_titre %}
+                                    <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ article.sous_titre }}</p>
+                                {% endif %}
+                                <div class="flex items-center justify-between text-sm text-gray-500">
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        {{ article.vues }} lectures
+                                    </span>
+                                    <span class="text-forest-600 font-semibold group-hover:underline">Lire →</span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-16">
+                <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <p class="text-2xl font-bold text-gray-600 mb-2">Aucun article dans cette catégorie</p>
+                <p class="text-gray-500">Revenez plus tard pour découvrir de nouveaux contenus</p>
+            </div>
+        {% endif %}
+        
+        <!-- Autres catégories -->
+        <div class="bg-white rounded-xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-forest-800 mb-6">Découvrir d'autres catégories</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for cat in categories %}
+                    {% if cat.nom != categorie.nom %}
+                        <a href="{% url 'nimbaApp:categorie' cat.nom %}" class="flex items-center justify-between p-4 hover:bg-forest-50 rounded-lg transition group border border-gray-100">
+                            <span class="text-gray-700 group-hover:text-forest-700 font-medium">{{ cat.get_nom_display }}</span>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-forest-600 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

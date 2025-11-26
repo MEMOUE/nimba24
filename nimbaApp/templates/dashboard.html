@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Nimba24{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-forest-50 to-gray-50 py-8">
+    <div class="container mx-auto px-4">
+        <!-- Header Dashboard -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-bold text-forest-800 mb-2">Dashboard Propriétaire</h1>
+                    <p class="text-gray-600">Bienvenue, <span class="font-semibold">{{ user.username }}</span></p>
+                </div>
+                <div class="bg-gradient-to-br from-forest-600 to-forest-800 text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold shadow-lg">
+                    {{ user.username.0|upper }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistiques -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-forest-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Articles Publiés</p>
+                        <p class="text-3xl font-bold text-forest-800 mt-2">{{ articles_count }}</p>
+                    </div>
+                    <div class="bg-forest-100 rounded-full w-14 h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-forest-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Publicités</p>
+                        <p class="text-3xl font-bold text-blue-800 mt-2">{{ publicites_count }}</p>
+                    </div>
+                    <div class="bg-blue-100 rounded-full w-14 h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-purple-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Total Vues</p>
+                        <p class="text-3xl font-bold text-purple-800 mt-2">{{ total_vues }}</p>
+                    </div>
+                    <div class="bg-purple-100 rounded-full w-14 h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-orange-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Moyenne/Article</p>
+                        <p class="text-3xl font-bold text-orange-800 mt-2">
+                            {% if articles_count > 0 %}
+                                {{ total_vues|divisibleby:articles_count|default:0 }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="bg-orange-100 rounded-full w-14 h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-orange-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions rapides -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Créer un article -->
+            <a href="{% url 'nimbaApp:creer_article' %}" class="block group">
+                <div class="bg-gradient-to-br from-forest-600 to-forest-800 rounded-2xl shadow-xl overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
+                    <div class="p-8 text-white">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center">
+                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </div>
+                            <span class="bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-semibold">
+                                Nouveau
+                            </span>
+                        </div>
+                        <h2 class="text-3xl font-bold mb-3">Créer un Article</h2>
+                        <p class="text-forest-100 text-lg mb-6">Publiez une nouvelle actualité pour vos lecteurs</p>
+                        
+                        <div class="flex items-center text-white font-semibold">
+                            <span>Commencer maintenant</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="bg-forest-900/20 px-8 py-4 flex items-center justify-around text-forest-100 text-sm">
+                        <span>✓ Éditeur simple</span>
+                        <span>✓ Upload image</span>
+                        <span>✓ Publication immédiate</span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Créer une publicité -->
+            <a href="{% url 'nimbaApp:creer_publicite' %}" class="block group">
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
+                    <div class="p-8 text-white">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-white/20 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center">
+                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                                </svg>
+                            </div>
+                            <span class="bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-semibold">
+                                Nouveau
+                            </span>
+                        </div>
+                        <h2 class="text-3xl font-bold mb-3">Créer une Publicité</h2>
+                        <p class="text-blue-100 text-lg mb-6">Ajoutez une nouvelle bannière publicitaire</p>
+                        
+                        <div class="flex items-center text-white font-semibold">
+                            <span>Commencer maintenant</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="bg-blue-900/20 px-8 py-4 flex items-center justify-around text-blue-100 text-sm">
+                        <span>✓ Multi-positions</span>
+                        <span>✓ Planification</span>
+                        <span>✓ Suivi des clics</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Articles récents -->
+<div class="bg-white rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-bold text-forest-800 mb-6 flex items-center">
+        <svg class="w-7 h-7 mr-3 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Activité récente
+    </h2>
+
+    <div class="space-y-4">
+        {% if articles_recents %}
+            {% for article in articles_recents %}
+                <div class="flex items-center justify-between p-4 hover:bg-forest-50 rounded-xl transition border border-gray-100">
+                    <div class="flex items-center space-x-4 flex-1">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-16 h-16 object-cover rounded-lg">
+                        {% else %}
+                            <div class="w-16 h-16 gradient-forest rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-2xl">📰</span>
+                            </div>
+                        {% endif %}
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-forest-800 mb-1 truncate">{{ article.titre }}</h4>
+                            <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    {{ article.date_publication|date:"d M Y" }}
+                                </span>
+                                <span class="bg-forest-100 text-forest-700 px-2 py-1 rounded text-xs font-semibold">
+                                    {{ article.categorie.get_nom_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 ml-4">
+                        <div class="text-right">
+                            <p class="text-2xl font-bold text-forest-700">{{ article.vues }}</p>
+                            <p class="text-xs text-gray-600">vues</p>
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <a href="{% url 'nimbaApp:modifier_article' article.id %}" class="text-blue-600 hover:text-blue-800 p-1" title="Modifier">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </a>
+                            <a href="{% url 'nimbaApp:supprimer_article' article.id %}" class="text-red-600 hover:text-red-800 p-1" title="Supprimer">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <a href="{% url 'nimbaApp:article_detail' article.id %}" class="text-forest-600 hover:text-forest-800">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-12 text-gray-500">
+                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <p class="text-lg font-semibold">Aucun article publié</p>
+                <p class="text-sm mt-2">Commencez par créer votre premier article</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+    </div>
+</div>
+{% endblock %}

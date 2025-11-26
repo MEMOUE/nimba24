@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Connexion Propriétaire - Nimba24{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4" style="background: linear-gradient(to bottom right, #f0fdf4, #dcfce7);">
+    <div class="max-w-md w-full">
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Header avec logo -->
+            <div class="gradient-forest px-8 py-8 text-white text-center">
+                <div class="bg-white rounded-full w-20 h-20 flex items-center justify-center shadow-lg mx-auto mb-4">
+                    <svg class="w-12 h-12 text-forest-700" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold mb-2">Connexion Propriétaire</h2>
+                <p class="text-forest-100">Accédez à votre espace de gestion</p>
+            </div>
+            
+            <!-- Formulaire -->
+            <div class="px-8 py-8">
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Username -->
+                    <div>
+                        <label for="username" class="block text-sm font-bold text-gray-700 mb-2">
+                            Nom d'utilisateur
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                required
+                                class="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest-600 transition"
+                                placeholder="Votre nom d'utilisateur"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-bold text-gray-700 mb-2">
+                            Mot de passe
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required
+                                class="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-forest-600 transition"
+                                placeholder="Votre mot de passe"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit"
+                        class="w-full gradient-forest text-white py-4 rounded-lg font-bold text-lg hover:opacity-90 transition transform hover:scale-105 shadow-lg"
+                    >
+                        Se connecter
+                    </button>
+                </form>
+                
+                <!-- Info -->
+                <div class="mt-6 bg-forest-50 rounded-lg p-4">
+                    <div class="flex items-start space-x-2">
+                        <svg class="w-5 h-5 text-forest-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <p class="text-sm text-forest-800">
+                            <strong>Espace réservé :</strong> Cette connexion est réservée au propriétaire du site pour gérer les articles et publicités.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Retour accueil -->
+        <div class="text-center mt-6">
+            <a href="{% url 'nimbaApp:home' %}" class="inline-flex items-center text-forest-700 hover:text-forest-900 font-semibold">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Retour à l'accueil
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}Créer une Publicité - Nimba24{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50 py-12">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <a href="{% url 'nimbaApp:dashboard' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold mb-4">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Retour au Dashboard
+                </a>
+                <h1 class="text-4xl font-bold text-blue-800 mb-2">Créer une Nouvelle Publicité</h1>
+                <p class="text-gray-600">Ajoutez une bannière publicitaire sur votre site</p>
+            </div>
+            
+            <!-- Formulaire -->
+            <form method="POST" enctype="multipart/form-data" class="bg-white rounded-2xl shadow-xl p-8">
+                {% csrf_token %}
+                
+                <!-- Titre -->
+                <div class="mb-6">
+                    <label for="titre" class="block text-sm font-bold text-gray-700 mb-2">
+                        Titre de la publicité <span class="text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="titre" 
+                        name="titre" 
+                        required
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition"
+                        placeholder="Ex: Promotion Restaurant Le Nimba"
+                    >
+                </div>
+                
+                <!-- Description -->
+                <div class="mb-6">
+                    <label for="description" class="block text-sm font-bold text-gray-700 mb-2">
+                        Description (optionnel)
+                    </label>
+                    <textarea 
+                        id="description" 
+                        name="description"
+                        rows="3"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition resize-none"
+                        placeholder="Une brève description de la publicité"
+                    ></textarea>
+                </div>
+                
+                <!-- Lien -->
+                <div class="mb-6">
+                    <label for="lien" class="block text-sm font-bold text-gray-700 mb-2">
+                        Lien (URL)
+                    </label>
+                    <input 
+                        type="url" 
+                        id="lien" 
+                        name="lien"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition"
+                        placeholder="https://exemple.com"
+                    >
+                    <p class="text-sm text-gray-500 mt-1">Où les visiteurs seront redirigés en cliquant sur la publicité</p>
+                </div>
+                
+                <!-- Position -->
+                <div class="mb-6">
+                    <label for="position" class="block text-sm font-bold text-gray-700 mb-2">
+                        Position d'affichage <span class="text-red-500">*</span>
+                    </label>
+                    <select 
+                        id="position" 
+                        name="position" 
+                        required
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition"
+                    >
+                        <option value="">-- Choisir une position --</option>
+                        <option value="header">Bannière en haut (après le menu)</option>
+                        <option value="sidebar">Barre latérale (page d'accueil)</option>
+                        <option value="article">Dans les articles</option>
+                        <option value="footer">Bannière en bas (avant le footer)</option>
+                    </select>
+                </div>
+                
+                <!-- Image -->
+                <div class="mb-6">
+                    <label for="image" class="block text-sm font-bold text-gray-700 mb-2">
+                        Image de la publicité <span class="text-red-500">*</span>
+                    </label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-600 transition">
+                        <input 
+                            type="file" 
+                            id="image" 
+                            name="image" 
+                            accept="image/*"
+                            required
+                            class="hidden"
+                            onchange="previewImage(event)"
+                        >
+                        <label for="image" class="cursor-pointer">
+                            <div id="image-preview">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <p class="text-gray-600 font-semibold">Cliquez pour choisir une image</p>
+                                <p class="text-sm text-gray-500 mt-1">Formats recommandés : 728x90 (header), 300x250 (sidebar)</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Dates -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="date_debut" class="block text-sm font-bold text-gray-700 mb-2">
+                            Date de début <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="datetime-local" 
+                            id="date_debut" 
+                            name="date_debut" 
+                            required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="date_fin" class="block text-sm font-bold text-gray-700 mb-2">
+                            Date de fin <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="datetime-local" 
+                            id="date_fin" 
+                            name="date_fin" 
+                            required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 transition"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Informations -->
+                <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                    <div class="flex items-start space-x-3">
+                        <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <h4 class="font-bold text-blue-900 mb-2">Guide des positions</h4>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li><strong>Header :</strong> Grande bannière horizontale visible par tous les visiteurs</li>
+                                <li><strong>Sidebar :</strong> Format carré/rectangle dans la barre latérale de l'accueil</li>
+                                <li><strong>Article :</strong> Publicité intégrée dans le contenu des articles</li>
+                                <li><strong>Footer :</strong> Bannière en bas de page</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Boutons -->
+                <div class="flex items-center justify-between">
+                    <a href="{% url 'nimbaApp:dashboard' %}" class="px-6 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition">
+                        Annuler
+                    </a>
+                    <button 
+                        type="submit"
+                        class="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-3 rounded-lg font-bold text-lg hover:opacity-90 transition transform hover:scale-105 shadow-lg"
+                    >
+                        Créer la publicité
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = `
+                <img src="${e.target.result}" class="max-h-48 mx-auto rounded-lg shadow-lg mb-2">
+                <p class="text-sm text-blue-600 font-semibold">Image sélectionnée : ${file.name}</p>
+                <p class="text-xs text-gray-500">Cliquez pour changer</p>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Définir la date de début à maintenant par défaut
+document.getElementById('date_debut').valueAsDate = new Date();
+</script>
+{% endblock %}
