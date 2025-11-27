@@ -13,13 +13,16 @@ def is_staff_user(user):
 
 def home(request):
     """Page d'accueil publique"""
-    # Article à la une (le plus récent marqué à la une)
+    # Article principal à la une (pour le carrousel principal)
     article_une = Article.objects.filter(est_publie=True, est_a_la_une=True).first()
     if not article_une:
         article_une = Article.objects.filter(est_publie=True).first()
 
-    # Autres articles récents
-    articles_recents = Article.objects.filter(est_publie=True).exclude(id=article_une.id if article_une else None)[:6]
+    # Tous les articles récents (excluant l'article principal)
+    if article_une:
+        articles_recents = Article.objects.filter(est_publie=True).exclude(id=article_une.id)[:10]
+    else:
+        articles_recents = Article.objects.filter(est_publie=True)[:10]
 
     # Articles par catégorie
     categories = Categorie.objects.all()
@@ -141,6 +144,30 @@ def dashboard(request):
 
 @login_required
 @user_passes_test(is_staff_user)
+def liste_articles(request):
+    """Liste complète des articles du propriétaire"""
+    articles = Article.objects.filter(auteur=request.user).order_by('-date_publication')
+
+    context = {
+        'articles': articles,
+    }
+    return render(request, 'liste_articles.html', context)
+
+
+@login_required
+@user_passes_test(is_staff_user)
+def liste_publicites(request):
+    """Liste complète des publicités du propriétaire"""
+    publicites = Publicite.objects.filter(auteur=request.user).order_by('-date_creation')
+
+    context = {
+        'publicites': publicites,
+    }
+    return render(request, 'liste_publicites.html', context)
+
+
+@login_required
+@user_passes_test(is_staff_user)
 def creer_article(request):
     """Page de création d'article"""
     if request.method == 'POST':
@@ -249,7 +276,7 @@ def modifier_article(request, id):
 
         article.save()
         messages.success(request, 'Article modifié avec succès !')
-        return redirect('nimbaApp:dashboard')
+        return redirect('nimbaApp:liste_articles')
 
     categories = Categorie.objects.all()
     context = {
@@ -268,7 +295,7 @@ def supprimer_article(request, id):
     if request.method == 'POST':
         article.delete()
         messages.success(request, 'Article supprimé avec succès !')
-        return redirect('nimbaApp:dashboard')
+        return redirect('nimbaApp:liste_articles')
 
     return render(request, 'confirmer_suppression_article.html', {'article': article})
 
@@ -294,7 +321,7 @@ def modifier_publicite(request, id):
 
         publicite.save()
         messages.success(request, 'Publicité modifiée avec succès !')
-        return redirect('nimbaApp:dashboard')
+        return redirect('nimbaApp:liste_publicites')
 
     # Formater les dates pour les inputs datetime-local
     date_debut_formatted = publicite.date_debut.strftime('%Y-%m-%dT%H:%M') if publicite.date_debut else ''
@@ -317,6 +344,6 @@ def supprimer_publicite(request, id):
     if request.method == 'POST':
         publicite.delete()
         messages.success(request, 'Publicité supprimée avec succès !')
-        return redirect('nimbaApp:dashboard')
+        return redirect('nimbaApp:liste_publicites')
 
     return render(request, 'confirmer_suppression_publicite.html', {'publicite': publicite})

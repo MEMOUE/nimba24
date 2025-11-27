@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes Publicités - Nimba24{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50 py-8">
+    <div class="container mx-auto px-4">
+        <!-- Header -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <a href="{% url 'nimbaApp:dashboard' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold mb-2">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Retour au Dashboard
+                    </a>
+                    <h1 class="text-3xl font-bold text-blue-800">Toutes mes Publicités</h1>
+                    <p class="text-gray-600 mt-1">Gérez toutes vos publicités en un seul endroit</p>
+                </div>
+                <a href="{% url 'nimbaApp:creer_publicite' %}" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-6 py-3 rounded-lg font-bold hover:opacity-90 transition transform hover:scale-105 shadow-lg flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Nouvelle Publicité</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Liste des publicités -->
+        {% if publicites %}
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for pub in publicites %}
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden">
+                        <!-- Image -->
+                        <div class="relative h-48 overflow-hidden bg-gray-100">
+                            <img src="{{ pub.image.url }}" alt="{{ pub.titre }}" class="w-full h-full object-contain">
+                            
+                            <!-- Badges -->
+                            <div class="absolute top-3 left-3 flex flex-wrap gap-2">
+                                {% if pub.est_active %}
+                                    {% if pub.est_valide %}
+                                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                            ● Active
+                                        </span>
+                                    {% else %}
+                                        <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                            Planifiée
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                        Inactive
+                                    </span>
+                                {% endif %}
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                    {{ pub.get_position_display }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Contenu -->
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+                                {{ pub.titre }}
+                            </h3>
+                            
+                            {% if pub.description %}
+                                <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ pub.description }}</p>
+                            {% endif %}
+
+                            <!-- Statistiques -->
+                            <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
+                                <div class="bg-purple-50 rounded-lg p-3">
+                                    <p class="text-xs text-purple-600 font-medium mb-1">Clics</p>
+                                    <p class="text-xl font-bold text-purple-700">{{ pub.nombre_clics }}</p>
+                                </div>
+                                <div class="bg-blue-50 rounded-lg p-3">
+                                    <p class="text-xs text-blue-600 font-medium mb-1">Période</p>
+                                    <p class="text-xs font-semibold text-blue-700">
+                                        {{ pub.date_debut|date:"d/m" }} - {{ pub.date_fin|date:"d/m" }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Dates détaillées -->
+                            <div class="text-xs text-gray-500 mb-4 space-y-1">
+                                <p class="flex items-center">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    Début: {{ pub.date_debut|date:"d M Y à H:i" }}
+                                </p>
+                                <p class="flex items-center">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    Fin: {{ pub.date_fin|date:"d M Y à H:i" }}
+                                </p>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="flex items-center justify-between gap-2 pt-4 border-t border-gray-100">
+                                {% if pub.lien %}
+                                    <a href="{{ pub.lien }}" target="_blank" class="flex items-center text-xs text-gray-600 hover:text-blue-600 transition">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        </svg>
+                                        Lien
+                                    </a>
+                                {% else %}
+                                    <span class="text-xs text-gray-400">Pas de lien</span>
+                                {% endif %}
+                                
+                                <div class="flex items-center gap-2">
+                                    <a href="{% url 'nimbaApp:modifier_publicite' pub.id %}" class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition" title="Modifier">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </a>
+                                    <a href="{% url 'nimbaApp:supprimer_publicite' pub.id %}" class="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition" title="Supprimer">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+                <svg class="w-20 h-20 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                </svg>
+                <p class="text-2xl font-bold text-gray-600 mb-2">Aucune publicité</p>
+                <p class="text-gray-500 mb-6">Vous n'avez pas encore créé de publicité</p>
+                <a href="{% url 'nimbaApp:creer_publicite' %}" class="inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-800 text-white px-6 py-3 rounded-lg font-bold hover:opacity-90 transition transform hover:scale-105 shadow-lg">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Créer ma première publicité
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

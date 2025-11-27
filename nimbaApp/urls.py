@@ -18,6 +18,10 @@ urlpatterns = [
     path('creer-article/', views.creer_article, name='creer_article'),
     path('creer-publicite/', views.creer_publicite, name='creer_publicite'),
 
+    # Listes
+    path('liste-articles/', views.liste_articles, name='liste_articles'),
+    path('liste-publicites/', views.liste_publicites, name='liste_publicites'),
+
     # Modification et suppression
     path('modifier-article/<int:id>/', views.modifier_article, name='modifier_article'),
     path('supprimer-article/<int:id>/', views.supprimer_article, name='supprimer_article'),

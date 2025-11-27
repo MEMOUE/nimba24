@@ -3,76 +3,240 @@
 {% block title %}Accueil - Nimba24{% endblock %}
 
 {% block content %}
-<!-- Article à la Une (Hero) - Version Professionnelle -->
+<!-- Carrousel Articles à la Une -->
 {% if article_une %}
 <section class="relative h-[500px] md:h-[650px] overflow-hidden">
-    <div class="absolute inset-0">
-        {% if article_une.image %}
-            <img src="{{ article_une.image.url }}" alt="{{ article_une.titre }}" class="w-full h-full object-cover">
-        {% else %}
-            <div class="w-full h-full gradient-forest"></div>
-        {% endif %}
-        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent"></div>
-    </div>
-
-    <div class="relative container mx-auto px-4 h-full flex items-end pb-12 md:pb-16">
-        <div class="max-w-5xl text-white">
-            <!-- Badges -->
-            <div class="flex flex-wrap items-center gap-3 mb-4">
-                <span class="inline-flex items-center bg-red-600 px-4 py-2 rounded-full text-sm font-bold animate-pulse shadow-lg">
-                    <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
-                    À LA UNE
-                </span>
-                <span class="inline-block bg-forest-600 px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                    {{ article_une.categorie.get_nom_display }}
-                </span>
-                <span class="flex items-center text-sm bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    {{ article_une.date_publication|date:"d M Y" }}
-                </span>
-            </div>
-
-            <!-- Titre -->
-            <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-5 leading-tight drop-shadow-lg">
-                <a href="{% url 'nimbaApp:article_detail' article_une.id %}" class="hover:text-forest-200 transition">
-                    {{ article_une.titre }}
-                </a>
-            </h1>
-
-            <!-- Aperçu Description -->
-            <div class="mb-6">
-                {% if article_une.sous_titre %}
-                    <p class="text-xl md:text-2xl mb-3 text-gray-100 font-medium leading-relaxed">
-                        {{ article_une.sous_titre }}
-                    </p>
+    <div id="carousel" class="relative h-full">
+        <!-- Slide principal (article_une) -->
+        <div class="carousel-slide active absolute inset-0 transition-opacity duration-1000" data-slide="0">
+            <div class="absolute inset-0">
+                {% if article_une.image %}
+                    <img src="{{ article_une.image.url }}" alt="{{ article_une.titre }}" class="w-full h-full object-cover">
+                {% else %}
+                    <div class="w-full h-full gradient-forest"></div>
                 {% endif %}
-                <p class="text-base md:text-lg text-gray-200 line-clamp-3 leading-relaxed">
-                    {{ article_une.contenu|truncatewords:40 }}
-                </p>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent"></div>
             </div>
 
-            <!-- Meta & CTA -->
-            <div class="flex flex-wrap items-center gap-4 md:gap-6">
-                <span class="flex items-center text-sm md:text-base">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                    {{ article_une.vues }} lectures
-                </span>
+            <div class="relative container mx-auto px-4 h-full flex items-end pb-12 md:pb-16">
+                <div class="max-w-5xl text-white">
+                    <!-- Badges -->
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="inline-flex items-center bg-red-600 px-4 py-2 rounded-full text-sm font-bold animate-pulse shadow-lg">
+                            <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
+                            À LA UNE
+                        </span>
+                        <span class="inline-block bg-forest-600 px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                            {{ article_une.categorie.get_nom_display }}
+                        </span>
+                        <span class="flex items-center text-sm bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {{ article_une.date_publication|date:"d M Y" }}
+                        </span>
+                    </div>
 
-                <a href="{% url 'nimbaApp:article_detail' article_une.id %}" class="inline-flex items-center bg-forest-600 hover:bg-forest-700 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-base md:text-lg transition transform hover:scale-105 shadow-2xl ml-auto">
-                    Lire l'article complet
-                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                    </svg>
-                </a>
+                    <!-- Titre -->
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-5 leading-tight drop-shadow-lg">
+                        <a href="{% url 'nimbaApp:article_detail' article_une.id %}" class="hover:text-forest-200 transition">
+                            {{ article_une.titre }}
+                        </a>
+                    </h1>
+
+                    <!-- Aperçu Description -->
+                    <div class="mb-6">
+                        {% if article_une.sous_titre %}
+                            <p class="text-xl md:text-2xl mb-3 text-gray-100 font-medium leading-relaxed">
+                                {{ article_une.sous_titre }}
+                            </p>
+                        {% endif %}
+                        <p class="text-base md:text-lg text-gray-200 line-clamp-3 leading-relaxed">
+                            {{ article_une.contenu|truncatewords:40 }}
+                        </p>
+                    </div>
+
+                    <!-- Meta & CTA -->
+                    <div class="flex flex-wrap items-center gap-4 md:gap-6">
+                        <span class="flex items-center text-sm md:text-base">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            {{ article_une.vues }} lectures
+                        </span>
+
+                        <a href="{% url 'nimbaApp:article_detail' article_une.id %}" class="inline-flex items-center bg-forest-600 hover:bg-forest-700 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-base md:text-lg transition transform hover:scale-105 shadow-2xl ml-auto">
+                            Lire l'article complet
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Autres articles à la une (jusqu'à 4 de plus) -->
+        {% for article in articles_recents|slice:":4" %}
+        {% if article.est_a_la_une %}
+        <div class="carousel-slide absolute inset-0 transition-opacity duration-1000" data-slide="{{ forloop.counter }}" style="opacity: 0; z-index: 0;">
+            <div class="absolute inset-0">
+                {% if article.image %}
+                    <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-full h-full object-cover">
+                {% else %}
+                    <div class="w-full h-full gradient-forest"></div>
+                {% endif %}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent"></div>
+            </div>
+
+            <div class="relative container mx-auto px-4 h-full flex items-end pb-12 md:pb-16">
+                <div class="max-w-5xl text-white">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <span class="inline-flex items-center bg-red-600 px-4 py-2 rounded-full text-sm font-bold animate-pulse shadow-lg">
+                            <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
+                            À LA UNE
+                        </span>
+                        <span class="inline-block bg-forest-600 px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                            {{ article.categorie.get_nom_display }}
+                        </span>
+                        <span class="flex items-center text-sm bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {{ article.date_publication|date:"d M Y" }}
+                        </span>
+                    </div>
+
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-5 leading-tight drop-shadow-lg">
+                        <a href="{% url 'nimbaApp:article_detail' article.id %}" class="hover:text-forest-200 transition">
+                            {{ article.titre }}
+                        </a>
+                    </h1>
+
+                    <div class="mb-6">
+                        {% if article.sous_titre %}
+                            <p class="text-xl md:text-2xl mb-3 text-gray-100 font-medium leading-relaxed">
+                                {{ article.sous_titre }}
+                            </p>
+                        {% endif %}
+                        <p class="text-base md:text-lg text-gray-200 line-clamp-3 leading-relaxed">
+                            {{ article.contenu|truncatewords:40 }}
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-4 md:gap-6">
+                        <span class="flex items-center text-sm md:text-base">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            {{ article.vues }} lectures
+                        </span>
+
+                        <a href="{% url 'nimbaApp:article_detail' article.id %}" class="inline-flex items-center bg-forest-600 hover:bg-forest-700 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-base md:text-lg transition transform hover:scale-105 shadow-2xl ml-auto">
+                            Lire l'article complet
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Boutons de navigation -->
+    <button onclick="prevSlide()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+    </button>
+    <button onclick="nextSlide()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+    </button>
+
+    <!-- Indicateurs -->
+    <div id="carousel-indicators" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+        <!-- Les indicateurs seront ajoutés dynamiquement -->
     </div>
 </section>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const totalSlides = slides.length;
+let autoSlideInterval;
+
+// Créer les indicateurs dynamiquement
+const indicatorsContainer = document.getElementById('carousel-indicators');
+for (let i = 0; i < totalSlides; i++) {
+    const indicator = document.createElement('button');
+    indicator.className = 'carousel-indicator w-3 h-3 rounded-full transition';
+    indicator.style.backgroundColor = i === 0 ? 'white' : 'rgba(255, 255, 255, 0.5)';
+    indicator.setAttribute('data-index', i);
+    indicator.onclick = () => goToSlide(i);
+    indicatorsContainer.appendChild(indicator);
+}
+
+const indicators = document.querySelectorAll('.carousel-indicator');
+
+function showSlide(index) {
+    slides.forEach((slide, i) => {
+        if (i === index) {
+            slide.classList.add('active');
+            slide.style.opacity = '1';
+            slide.style.zIndex = '1';
+        } else {
+            slide.classList.remove('active');
+            slide.style.opacity = '0';
+            slide.style.zIndex = '0';
+        }
+    });
+
+    indicators.forEach((indicator, i) => {
+        indicator.style.backgroundColor = i === index ? 'white' : 'rgba(255, 255, 255, 0.5)';
+    });
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+    resetAutoSlide();
+}
+
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    showSlide(currentSlide);
+    resetAutoSlide();
+}
+
+function goToSlide(index) {
+    currentSlide = index;
+    showSlide(currentSlide);
+    resetAutoSlide();
+}
+
+function startAutoSlide() {
+    if (totalSlides > 1) {
+        autoSlideInterval = setInterval(nextSlide, 5000); // Change toutes les 5 secondes
+    }
+}
+
+function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+}
+
+// Démarrer le défilement automatique au chargement
+if (totalSlides > 1) {
+    startAutoSlide();
+}
+</script>
 {% endif %}
 
 <!-- Contenu principal avec sidebar -->

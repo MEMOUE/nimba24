@@ -150,6 +150,63 @@
                 </div>
             </a>
         </div>
+
+        <!-- Nouveaux boutons : Voir toutes les listes -->
+<div class="grid md:grid-cols-2 gap-8 mt-8">
+    <!-- Voir tous les articles -->
+    <a href="{% url 'nimbaApp:liste_articles' %}" class="block group">
+        <div class="bg-white border-2 border-forest-600 rounded-2xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="bg-forest-100 rounded-full w-16 h-16 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-forest-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <span class="bg-forest-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        {{ articles_count }} articles
+                    </span>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-3">Voir tous les Articles</h2>
+                <p class="text-gray-600 text-lg mb-6">Gérez, modifiez et supprimez vos articles</p>
+
+                <div class="flex items-center text-forest-600 font-semibold">
+                    <span>Accéder à la liste</span>
+                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </a>
+
+    <!-- Voir toutes les publicités -->
+    <a href="{% url 'nimbaApp:liste_publicites' %}" class="block group">
+        <div class="bg-white border-2 border-blue-600 rounded-2xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                        </svg>
+                    </div>
+                    <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        {{ publicites_count }} publicités
+                    </span>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-3">Voir toutes les Publicités</h2>
+                <p class="text-gray-600 text-lg mb-6">Gérez, modifiez et supprimez vos publicités</p>
+
+                <div class="flex items-center text-blue-600 font-semibold">
+                    <span>Accéder à la liste</span>
+                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
         
         <!-- Articles récents -->
 <div class="bg-white rounded-2xl shadow-lg p-8">
