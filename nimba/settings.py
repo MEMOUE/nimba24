@@ -139,3 +139,32 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# =======================
+# EMAIL CONFIGURATION
+# =======================
+
+# Backend d'envoi d'emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Serveur SMTP
+EMAIL_HOST = 'mail.nimba24.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True  # Port 465 utilise SSL
+EMAIL_USE_TLS = False  # SSL et TLS ne peuvent pas être utilisés ensemble
+
+# Authentification
+EMAIL_HOST_USER = 'contact@nimba24.com'
+EMAIL_HOST_PASSWORD = 'Nimba@2025'  # À remplacer par le vrai mot de passe
+
+# Expéditeur par défaut
+DEFAULT_FROM_EMAIL = 'Nimba24 <contact@nimba24.com>'
+SERVER_EMAIL = 'contact@nimba24.com'
+
+# Timeout (optionnel)
+EMAIL_TIMEOUT = 30
+
+# Pour le développement, vous pouvez utiliser ce backend pour voir les emails dans la console
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

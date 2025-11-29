@@ -9,6 +9,9 @@ urlpatterns = [
     path('categorie/<str:categorie>/', views.categorie_view, name='categorie'),
     path('article/<int:id>/', views.article_detail, name='article_detail'),
 
+    # Newsletter
+    path('newsletter/inscription/', views.inscription_newsletter, name='inscription_newsletter'),
+
     # Authentification
     path('connexion/', views.connexion, name='connexion'),
     path('logout/', views.logout_view, name='logout'),

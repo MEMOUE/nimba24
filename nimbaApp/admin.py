@@ -1,5 +1,28 @@
 from django.contrib import admin
-from .models import Categorie, Article, Publicite
+from .models import Categorie, Article, Publicite, Newsletter
+
+
+@admin.register(Newsletter)
+class NewsletterAdmin(admin.ModelAdmin):
+    list_display = ('email', 'date_inscription', 'est_actif')
+    list_filter = ('est_actif', 'date_inscription')
+    search_fields = ('email',)
+    date_hierarchy = 'date_inscription'
+    readonly_fields = ('date_inscription',)
+
+    actions = ['activer_abonnes', 'desactiver_abonnes']
+
+    def activer_abonnes(self, request, queryset):
+        queryset.update(est_actif=True)
+        self.message_user(request, f"{queryset.count()} abonné(s) activé(s)")
+
+    activer_abonnes.short_description = "Activer les abonnés sélectionnés"
+
+    def desactiver_abonnes(self, request, queryset):
+        queryset.update(est_actif=False)
+        self.message_user(request, f"{queryset.count()} abonné(s) désactivé(s)")
+
+    desactiver_abonnes.short_description = "Désactiver les abonnés sélectionnés"
 
 
 @admin.register(Categorie)

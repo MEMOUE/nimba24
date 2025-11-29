@@ -3,6 +3,20 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 
+class Newsletter(models.Model):
+    email = models.EmailField(unique=True, verbose_name='Email')
+    date_inscription = models.DateTimeField(auto_now_add=True, verbose_name='Date d\'inscription')
+    est_actif = models.BooleanField(default=True, verbose_name='Actif')
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = 'Abonné Newsletter'
+        verbose_name_plural = 'Abonnés Newsletter'
+        ordering = ['-date_inscription']
+
+
 class Categorie(models.Model):
     CATEGORIES_CHOICES = [
         ('politique', 'Politique'),

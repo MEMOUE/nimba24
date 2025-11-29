@@ -1,0 +1,28 @@
+<!-- Extrait du footer avec Newsletter fonctionnelle -->
+
+<!-- Newsletter Section (à placer dans base.html) -->
+<div>
+    <h4 class="font-bold text-xl mb-6 flex items-center">
+        <span class="w-1 h-6 bg-forest-400 mr-3"></span>
+        Newsletter
+    </h4>
+    <p class="text-forest-100 text-sm mb-4 leading-relaxed">
+        Recevez les dernières actualités directement dans votre boîte mail
+    </p>
+    <form method="POST" action="{% url 'nimbaApp:inscription_newsletter' %}" class="space-y-3">
+        {% csrf_token %}
+        <input
+            type="email"
+            name="email"
+            placeholder="Votre adresse email"
+            required
+            class="w-full px-4 py-3 rounded-lg text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-forest-400 transition"
+        >
+        <button type="submit" class="w-full bg-forest-500 hover:bg-forest-400 px-4 py-3 rounded-lg font-bold transition transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <span>S'abonner</span>
+        </button>
+    </form>
+</div>

@@ -3,12 +3,59 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.utils import timezone
-from .models import Article, Categorie, Publicite
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .models import Article, Categorie, Publicite, Newsletter
+from .email_utils import envoyer_newsletter_nouvel_article, envoyer_email_bienvenue_newsletter
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def is_staff_user(user):
     """Vérifie si l'utilisateur est un membre du staff"""
     return user.is_staff
+
+
+@require_POST
+def inscription_newsletter(request):
+    """Inscription à la newsletter"""
+    email = request.POST.get('email', '').strip()
+
+    if not email:
+        messages.error(request, 'Veuillez entrer une adresse email.')
+        return redirect(request.META.get('HTTP_REFERER', 'nimbaApp:home'))
+
+    try:
+        # Vérifier si l'email existe déjà
+        newsletter, created = Newsletter.objects.get_or_create(
+            email=email,
+            defaults={'est_actif': True}
+        )
+
+        if created:
+            # Envoyer l'email de bienvenue
+            try:
+                envoyer_email_bienvenue_newsletter(email)
+                logger.info(f"Email de bienvenue envoyé à {email}")
+            except Exception as e:
+                logger.error(f"Erreur lors de l'envoi de l'email de bienvenue: {str(e)}")
+
+            messages.success(request,
+                             f'✅ Merci ! Vous êtes maintenant abonné à notre newsletter avec l\'adresse {email}')
+        else:
+            if newsletter.est_actif:
+                messages.info(request, f'📧 Vous êtes déjà abonné avec l\'adresse {email}')
+            else:
+                # Réactiver l'abonnement
+                newsletter.est_actif = True
+                newsletter.save()
+                messages.success(request, f'✅ Votre abonnement a été réactivé avec l\'adresse {email}')
+    except Exception as e:
+        logger.error(f"Erreur lors de l'inscription à la newsletter: {str(e)}")
+        messages.error(request, 'Une erreur est survenue. Veuillez réessayer.')
+
+    return redirect(request.META.get('HTTP_REFERER', 'nimbaApp:home'))
 
 
 def home(request):
@@ -133,11 +180,15 @@ def dashboard(request):
     articles_recents = Article.objects.filter(auteur=request.user)[:5]
     total_vues = sum(article.vues for article in Article.objects.filter(auteur=request.user))
 
+    # Statistique newsletter
+    newsletter_count = Newsletter.objects.filter(est_actif=True).count()
+
     context = {
         'articles_count': articles_count,
         'publicites_count': publicites_count,
         'articles_recents': articles_recents,
         'total_vues': total_vues,
+        'newsletter_count': newsletter_count,
     }
     return render(request, 'dashboard.html', context)
 
@@ -191,7 +242,25 @@ def creer_article(request):
                 est_a_la_une=est_a_la_une,
                 est_publie=est_publie,
             )
-            messages.success(request, 'Article créé avec succès !')
+
+            # Envoyer la newsletter si l'article est publié
+            if est_publie:
+                try:
+                    nb_abonnes = envoyer_newsletter_nouvel_article(article)
+                    if nb_abonnes > 0:
+                        messages.success(request,
+                                         f'Article créé avec succès ! Newsletter envoyée à {nb_abonnes} abonné(s).')
+                        logger.info(f"Article {article.id} créé et newsletter envoyée à {nb_abonnes} abonnés")
+                    else:
+                        messages.success(request, 'Article créé avec succès ! (Aucun abonné à la newsletter)')
+                        logger.info(f"Article {article.id} créé mais aucun abonné actif")
+                except Exception as e:
+                    logger.error(f"Erreur lors de l'envoi de la newsletter pour l'article {article.id}: {str(e)}")
+                    messages.warning(request,
+                                     f'Article créé avec succès, mais erreur lors de l\'envoi de la newsletter: {str(e)}')
+            else:
+                messages.success(request, 'Article créé avec succès ! (Non publié, newsletter non envoyée)')
+
             return redirect('nimbaApp:dashboard')
         else:
             messages.error(request, 'Veuillez remplir tous les champs obligatoires.')
@@ -258,6 +327,9 @@ def modifier_article(request, id):
     """Page de modification d'article"""
     article = get_object_or_404(Article, id=id, auteur=request.user)
 
+    # Sauvegarder l'état de publication avant modification
+    etait_publie = article.est_publie
+
     if request.method == 'POST':
         article.titre = request.POST.get('titre')
         article.sous_titre = request.POST.get('sous_titre')
@@ -275,7 +347,24 @@ def modifier_article(request, id):
         article.est_publie = request.POST.get('est_publie') == 'on'
 
         article.save()
-        messages.success(request, 'Article modifié avec succès !')
+
+        # Envoyer la newsletter si l'article vient d'être publié
+        if article.est_publie and not etait_publie:
+            try:
+                nb_abonnes = envoyer_newsletter_nouvel_article(article)
+                if nb_abonnes > 0:
+                    messages.success(request,
+                                     f'Article modifié et publié ! Newsletter envoyée à {nb_abonnes} abonné(s).')
+                    logger.info(f"Article {article.id} publié et newsletter envoyée à {nb_abonnes} abonnés")
+                else:
+                    messages.success(request, 'Article modifié et publié ! (Aucun abonné à la newsletter)')
+            except Exception as e:
+                logger.error(f"Erreur lors de l'envoi de la newsletter pour l'article {article.id}: {str(e)}")
+                messages.warning(request,
+                                 f'Article modifié avec succès, mais erreur lors de l\'envoi de la newsletter: {str(e)}')
+        else:
+            messages.success(request, 'Article modifié avec succès !')
+
         return redirect('nimbaApp:liste_articles')
 
     categories = Categorie.objects.all()
