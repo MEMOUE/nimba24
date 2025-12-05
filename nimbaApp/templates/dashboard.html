@@ -19,7 +19,7 @@
         </div>
         
         <!-- Statistiques -->
-        <div class="grid md:grid-cols-4 gap-6 mb-8">
+        <div class="grid md:grid-cols-5 gap-6 mb-8">
             <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-forest-600">
                 <div class="flex items-center justify-between">
                     <div>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-600">
                 <div class="flex items-center justify-between">
                     <div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-purple-600">
                 <div class="flex items-center justify-between">
                     <div>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-orange-600">
                 <div class="flex items-center justify-between">
                     <div>
@@ -82,8 +82,22 @@
                     </div>
                 </div>
             </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-yellow-600">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-medium">Abonnés Newsletter</p>
+                        <p class="text-3xl font-bold text-yellow-800 mt-2">{{ newsletter_count }}</p>
+                    </div>
+                    <div class="bg-yellow-100 rounded-full w-14 h-14 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-yellow-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </div>
-        
+
         <!-- Actions rapides -->
         <div class="grid md:grid-cols-2 gap-8 mb-8">
             <!-- Créer un article -->
@@ -102,7 +116,7 @@
                         </div>
                         <h2 class="text-3xl font-bold mb-3">Créer un Article</h2>
                         <p class="text-forest-100 text-lg mb-6">Publiez une nouvelle actualité pour vos lecteurs</p>
-                        
+
                         <div class="flex items-center text-white font-semibold">
                             <span>Commencer maintenant</span>
                             <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,7 +131,7 @@
                     </div>
                 </div>
             </a>
-            
+
             <!-- Créer une publicité -->
             <a href="{% url 'nimbaApp:creer_publicite' %}" class="block group">
                 <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-xl overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
@@ -134,7 +148,7 @@
                         </div>
                         <h2 class="text-3xl font-bold mb-3">Créer une Publicité</h2>
                         <p class="text-blue-100 text-lg mb-6">Ajoutez une nouvelle bannière publicitaire</p>
-                        
+
                         <div class="flex items-center text-white font-semibold">
                             <span>Commencer maintenant</span>
                             <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,148 +165,216 @@
             </a>
         </div>
 
-        <!-- Nouveaux boutons : Voir toutes les listes -->
-<div class="grid md:grid-cols-2 gap-8 mt-8">
-    <!-- Voir tous les articles -->
-    <a href="{% url 'nimbaApp:liste_articles' %}" class="block group">
-        <div class="bg-white border-2 border-forest-600 rounded-2xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
-            <div class="p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <div class="bg-forest-100 rounded-full w-16 h-16 flex items-center justify-center">
-                        <svg class="w-10 h-10 text-forest-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                    <span class="bg-forest-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                        {{ articles_count }} articles
-                    </span>
-                </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-3">Voir tous les Articles</h2>
-                <p class="text-gray-600 text-lg mb-6">Gérez, modifiez et supprimez vos articles</p>
-
-                <div class="flex items-center text-forest-600 font-semibold">
-                    <span>Accéder à la liste</span>
-                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </a>
-
-    <!-- Voir toutes les publicités -->
-    <a href="{% url 'nimbaApp:liste_publicites' %}" class="block group">
-        <div class="bg-white border-2 border-blue-600 rounded-2xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
-            <div class="p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center">
-                        <svg class="w-10 h-10 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
-                        </svg>
-                    </div>
-                    <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                        {{ publicites_count }} publicités
-                    </span>
-                </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-3">Voir toutes les Publicités</h2>
-                <p class="text-gray-600 text-lg mb-6">Gérez, modifiez et supprimez vos publicités</p>
-
-                <div class="flex items-center text-blue-600 font-semibold">
-                    <span>Accéder à la liste</span>
-                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </a>
-</div>
-        
-        <!-- Articles récents -->
-<div class="bg-white rounded-2xl shadow-lg p-8">
-    <h2 class="text-2xl font-bold text-forest-800 mb-6 flex items-center">
-        <svg class="w-7 h-7 mr-3 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        Activité récente
-    </h2>
-
-    <div class="space-y-4">
-        {% if articles_recents %}
-            {% for article in articles_recents %}
-                <div class="flex items-center justify-between p-4 hover:bg-forest-50 rounded-xl transition border border-gray-100">
-                    <div class="flex items-center space-x-4 flex-1">
-                        {% if article.image %}
-                            <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-16 h-16 object-cover rounded-lg">
-                        {% else %}
-                            <div class="w-16 h-16 gradient-forest rounded-lg flex items-center justify-center flex-shrink-0">
-                                <span class="text-white text-2xl">📰</span>
-                            </div>
-                        {% endif %}
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-forest-800 mb-1 truncate">{{ article.titre }}</h4>
-                            <div class="flex items-center space-x-4 text-sm text-gray-600">
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                    {{ article.date_publication|date:"d M Y" }}
-                                </span>
-                                <span class="bg-forest-100 text-forest-700 px-2 py-1 rounded text-xs font-semibold">
-                                    {{ article.categorie.get_nom_display }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-3 ml-4">
-                        <div class="text-right">
-                            <p class="text-2xl font-bold text-forest-700">{{ article.vues }}</p>
-                            <p class="text-xs text-gray-600">vues</p>
-                        </div>
-                        <div class="flex flex-col space-y-2">
-                            <a href="{% url 'nimbaApp:modifier_article' article.id %}" class="text-blue-600 hover:text-blue-800 p-1" title="Modifier">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        <!-- Boutons d'accès aux listes complètes -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Voir tous les articles -->
+            <a href="{% url 'nimbaApp:liste_articles' %}" class="block group">
+                <div class="bg-white border-2 border-forest-600 rounded-2xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-forest-100 rounded-full w-16 h-16 flex items-center justify-center">
+                                <svg class="w-10 h-10 text-forest-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                                 </svg>
-                            </a>
-                            <a href="{% url 'nimbaApp:supprimer_article' article.id %}" class="text-red-600 hover:text-red-800 p-1" title="Supprimer">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </a>
+                            </div>
+                            <span class="bg-forest-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                                {{ articles_count }} articles
+                            </span>
                         </div>
-                        <a href="{% url 'nimbaApp:article_detail' article.id %}" class="text-forest-600 hover:text-forest-800">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-3">Liste des Articles</h2>
+                        <p class="text-gray-600 text-lg mb-6">Consultez, modifiez et gérez tous vos articles</p>
+
+                        <div class="flex items-center text-forest-600 font-semibold">
+                            <span>Voir la liste complète</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
-                        </a>
+                        </div>
                     </div>
                 </div>
-            {% endfor %}
-        {% else %}
-            <div class="text-center py-12 text-gray-500">
-                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-                <p class="text-lg font-semibold">Aucun article publié</p>
-                <p class="text-sm mt-2">Commencez par créer votre premier article</p>
+            </a>
+
+            <!-- Voir toutes les publicités -->
+            <a href="{% url 'nimbaApp:liste_publicites' %}" class="block group">
+                <div class="bg-white border-2 border-blue-600 rounded-2xl shadow-lg overflow-hidden transform group-hover:-translate-y-2 transition duration-300">
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center">
+                                <svg class="w-10 h-10 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                            </div>
+                            <span class="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                                {{ publicites_count }} publicités
+                            </span>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-3">Liste des Publicités</h2>
+                        <p class="text-gray-600 text-lg mb-6">Consultez, modifiez et gérez toutes vos publicités</p>
+
+                        <div class="flex items-center text-blue-600 font-semibold">
+                            <span>Voir la liste complète</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Articles récents -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-forest-800 flex items-center">
+                    <svg class="w-7 h-7 mr-3 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Articles récents
+                </h2>
+                <a href="{% url 'nimbaApp:liste_articles' %}" class="text-forest-600 hover:text-forest-800 font-semibold text-sm flex items-center">
+                    Voir tout
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
-        {% endif %}
-    </div>
-</div>
-    </div>
-    <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-yellow-600">
-    <div class="flex items-center justify-between">
-        <div>
-            <p class="text-gray-600 text-sm font-medium">Abonnés Newsletter</p>
-            <p class="text-3xl font-bold text-yellow-800 mt-2">{{ newsletter_count }}</p>
+
+            <div class="space-y-4">
+                {% if articles_recents %}
+                    {% for article in articles_recents %}
+                        <div class="flex items-center justify-between p-4 hover:bg-forest-50 rounded-xl transition border border-gray-100">
+                            <div class="flex items-center space-x-4 flex-1">
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-16 h-16 object-cover rounded-lg">
+                                {% else %}
+                                    <div class="w-16 h-16 gradient-forest rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <span class="text-white text-2xl">📰</span>
+                                    </div>
+                                {% endif %}
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-forest-800 mb-1 truncate">{{ article.titre }}</h4>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            {{ article.date_publication|date:"d M Y" }}
+                                        </span>
+                                        <span class="bg-forest-100 text-forest-700 px-2 py-1 rounded text-xs font-semibold">
+                                            {{ article.categorie.get_nom_display }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 ml-4">
+                                <div class="text-right">
+                                    <p class="text-2xl font-bold text-forest-700">{{ article.vues }}</p>
+                                    <p class="text-xs text-gray-600">vues</p>
+                                </div>
+                                <div class="flex flex-col space-y-2">
+                                    <a href="{% url 'nimbaApp:modifier_article' article.id %}" class="text-blue-600 hover:text-blue-800 p-1" title="Modifier">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </a>
+                                    <a href="{% url 'nimbaApp:supprimer_article' article.id %}" class="text-red-600 hover:text-red-800 p-1" title="Supprimer">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                                <a href="{% url 'nimbaApp:article_detail' article.id %}" class="text-forest-600 hover:text-forest-800">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-12 text-gray-500">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <p class="text-lg font-semibold">Aucun article publié</p>
+                        <p class="text-sm mt-2">Commencez par créer votre premier article</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-        <div class="bg-yellow-100 rounded-full w-14 h-14 flex items-center justify-center">
-            <svg class="w-8 h-8 text-yellow-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
+
+        <!-- Publicités récentes -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-blue-800 flex items-center">
+                    <svg class="w-7 h-7 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                    </svg>
+                    Publicités récentes
+                </h2>
+                <a href="{% url 'nimbaApp:liste_publicites' %}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm flex items-center">
+                    Voir tout
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="space-y-4">
+                {% if publicites_recentes %}
+                    {% for pub in publicites_recentes %}
+                        <div class="flex items-center justify-between p-4 hover:bg-blue-50 rounded-xl transition border border-gray-100">
+                            <div class="flex items-center space-x-4 flex-1">
+                                <img src="{{ pub.image.url }}" alt="{{ pub.titre }}" class="w-16 h-16 object-contain rounded-lg bg-gray-100">
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-blue-800 mb-1 truncate">{{ pub.titre }}</h4>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-semibold">
+                                            {{ pub.get_position_display }}
+                                        </span>
+                                        {% if pub.est_valide %}
+                                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">
+                                                Active
+                                            </span>
+                                        {% else %}
+                                            <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">
+                                                Inactive
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 ml-4">
+                                <div class="text-right">
+                                    <p class="text-2xl font-bold text-blue-700">{{ pub.nombre_clics }}</p>
+                                    <p class="text-xs text-gray-600">clics</p>
+                                </div>
+                                <div class="flex flex-col space-y-2">
+                                    <a href="{% url 'nimbaApp:modifier_publicite' pub.id %}" class="text-blue-600 hover:text-blue-800 p-1" title="Modifier">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </a>
+                                    <a href="{% url 'nimbaApp:supprimer_publicite' pub.id %}" class="text-red-600 hover:text-red-800 p-1" title="Supprimer">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-12 text-gray-500">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                        </svg>
+                        <p class="text-lg font-semibold">Aucune publicité</p>
+                        <p class="text-sm mt-2">Commencez par créer votre première publicité</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}

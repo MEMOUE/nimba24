@@ -177,7 +177,8 @@ def dashboard(request):
     """Dashboard du propriétaire"""
     articles_count = Article.objects.filter(auteur=request.user).count()
     publicites_count = Publicite.objects.filter(auteur=request.user).count()
-    articles_recents = Article.objects.filter(auteur=request.user)[:5]
+    articles_recents = Article.objects.filter(auteur=request.user).order_by('-date_publication')[:5]
+    publicites_recentes = Publicite.objects.filter(auteur=request.user).order_by('-date_creation')[:5]
     total_vues = sum(article.vues for article in Article.objects.filter(auteur=request.user))
 
     # Statistique newsletter
@@ -187,6 +188,7 @@ def dashboard(request):
         'articles_count': articles_count,
         'publicites_count': publicites_count,
         'articles_recents': articles_recents,
+        'publicites_recentes': publicites_recentes,  # AJOUT DE CETTE LIGNE
         'total_vues': total_vues,
         'newsletter_count': newsletter_count,
     }
@@ -214,7 +216,7 @@ def liste_publicites(request):
     context = {
         'publicites': publicites,
     }
-    return render(request, 'liste_publicites.html', context)
+    return render(request, "liste_publicites.html", context)
 
 
 @login_required
@@ -246,20 +248,23 @@ def creer_article(request):
             # Envoyer la newsletter si l'article est publié
             if est_publie:
                 try:
+                    # CORRECTION CRITIQUE: Normaliser tous les abonnés pour s'assurer que est_actif est True
+                    Newsletter.objects.all().update(est_actif=True)
+
                     nb_abonnes = envoyer_newsletter_nouvel_article(article)
                     if nb_abonnes > 0:
                         messages.success(request,
-                                         f'Article créé avec succès ! Newsletter envoyée à {nb_abonnes} abonné(s).')
+                                         f'✅ Article créé avec succès ! Newsletter envoyée à {nb_abonnes} abonné(s).')
                         logger.info(f"Article {article.id} créé et newsletter envoyée à {nb_abonnes} abonnés")
                     else:
-                        messages.success(request, 'Article créé avec succès ! (Aucun abonné à la newsletter)')
+                        messages.success(request, '✅ Article créé avec succès ! (Aucun abonné à la newsletter)')
                         logger.info(f"Article {article.id} créé mais aucun abonné actif")
                 except Exception as e:
                     logger.error(f"Erreur lors de l'envoi de la newsletter pour l'article {article.id}: {str(e)}")
                     messages.warning(request,
                                      f'Article créé avec succès, mais erreur lors de l\'envoi de la newsletter: {str(e)}')
             else:
-                messages.success(request, 'Article créé avec succès ! (Non publié, newsletter non envoyée)')
+                messages.success(request, '✅ Article créé avec succès ! (Non publié, newsletter non envoyée)')
 
             return redirect('nimbaApp:dashboard')
         else:
@@ -351,19 +356,22 @@ def modifier_article(request, id):
         # Envoyer la newsletter si l'article vient d'être publié
         if article.est_publie and not etait_publie:
             try:
+                # CORRECTION CRITIQUE: Normaliser tous les abonnés
+                Newsletter.objects.all().update(est_actif=True)
+
                 nb_abonnes = envoyer_newsletter_nouvel_article(article)
                 if nb_abonnes > 0:
                     messages.success(request,
-                                     f'Article modifié et publié ! Newsletter envoyée à {nb_abonnes} abonné(s).')
+                                     f'✅ Article modifié et publié ! Newsletter envoyée à {nb_abonnes} abonné(s).')
                     logger.info(f"Article {article.id} publié et newsletter envoyée à {nb_abonnes} abonnés")
                 else:
-                    messages.success(request, 'Article modifié et publié ! (Aucun abonné à la newsletter)')
+                    messages.success(request, '✅ Article modifié et publié ! (Aucun abonné à la newsletter)')
             except Exception as e:
                 logger.error(f"Erreur lors de l'envoi de la newsletter pour l'article {article.id}: {str(e)}")
                 messages.warning(request,
                                  f'Article modifié avec succès, mais erreur lors de l\'envoi de la newsletter: {str(e)}')
         else:
-            messages.success(request, 'Article modifié avec succès !')
+            messages.success(request, '✅ Article modifié avec succès !')
 
         return redirect('nimbaApp:liste_articles')
 

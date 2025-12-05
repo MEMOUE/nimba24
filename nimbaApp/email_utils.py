@@ -34,7 +34,7 @@ def envoyer_newsletter_nouvel_article(article):
 
     # Contenu HTML de l'email
     try:
-        html_content = render_to_string('emails/nouvel_article.html', contexte)
+        html_content = render_to_string('nouvel_article.html', contexte)
         text_content = strip_tags(html_content)
 
         # Créer l'email
